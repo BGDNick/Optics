@@ -383,9 +383,10 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     added_lens.length = ui->lineEditLensLength->text().toDouble();
     added_lens.r_index = ui->lineEditLensR_Index->text().toDouble();
     added_lens.name = ui->lineEditLensName->text();
-    added_lens.type = "Flat"; //константа перечисления
+    //added_lens.type = "Flat"; //константа перечисления
     added_lens.angle = 0;
-    added_lens.height = 0;
+    //added_lens.height = 0;
+    added_lens.width = ui->lineEditLensWidth->text().toDouble();
 
     // проверка на то занято ли имя
     int counter = 0;
@@ -422,6 +423,7 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     ui->lineEditLensCoordX->clear();
     ui->lineEditLensCoordY->clear();
     ui->lineEditLensLength->clear();
+    ui->lineEditLensWidth->clear();
     ui->lineEditLensRadiusLeft->clear();
     ui->lineEditLensRadiusRight->clear();
     ui->lineEditLensR_Index->clear();
@@ -568,6 +570,7 @@ void Window::on_listWidget_itemClicked(QListWidgetItem *item)
                 ui->lineEditLensCoordX->setText(QString::number(l.coord.first));
                 ui->lineEditLensCoordY->setText(QString::number(l.coord.second));
                 ui->lineEditLensLength->setText(QString::number(l.length));
+                ui->lineEditLensWidth->setText(QString::number(l.width));
                 ui->lineEditLensName->setText(l.name);
                 ui->lineEditLensRadiusLeft->setText(QString::number(l.radius.first));
                 ui->lineEditLensRadiusRight->setText(QString::number(l.radius.second));

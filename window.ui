@@ -662,6 +662,9 @@ padding:30px;
     <property name="frameShape">
      <enum>QFrame::Box</enum>
     </property>
+    <property name="undoRedoEnabled">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="pushButtonTextEnter">
     <property name="enabled">

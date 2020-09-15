@@ -85,7 +85,6 @@ public:
     Ui::Window *ui;
     std::unique_ptr<QGraphicsScene> scene;
     //QGraphicsScene *scene;
-    QMap<QString, const QLibrary> libs;
 private:
     std::pair<double, double> mainFrame = std::make_pair(500.0, 500.0);
     bool is_saved = true; 
@@ -93,6 +92,7 @@ private:
     QGraphicsView view;
     QString currentFile;
     double current_scale = 0.0;
+    const QLibrary lib;
 
 
 

@@ -402,9 +402,8 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     }
 
     //проверка на коректность введенных данных
-    if((added_lens.radius.first<=0)||(added_lens.radius.second<=0)||(added_lens.length <= 0) ||
-            (added_lens.radius.first < added_lens.length / 2 + 1) ||(added_lens.radius.second) < (added_lens.length / 2 + 1) ||
-            added_lens.r_index > 5)
+    if((added_lens.length <= 0) ||(abs(added_lens.radius.first) < added_lens.length / 2 + 1) ||
+            (abs(added_lens.radius.second)) < (added_lens.length / 2 + 1) ||added_lens.r_index > 5)
     {
         QMessageBox::information(this, "Warning", "Incorrect lens' data");
         return;

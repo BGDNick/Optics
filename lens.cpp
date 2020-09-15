@@ -28,8 +28,8 @@ QJsonObject Lens::toJsonObject() const
     jObj.insert("x", QJsonValue::fromVariant(coord.first));
     jObj.insert("y", QJsonValue::fromVariant(coord.second));
 
-    jObj.insert("R2", QJsonValue::fromVariant(radius.first));
-    jObj.insert("R1", QJsonValue::fromVariant(-radius.second));
+    jObj.insert("R2", QJsonValue::fromVariant(-radius.first));
+    jObj.insert("R1", QJsonValue::fromVariant(radius.second));
     jObj.insert("l", QJsonValue::fromVariant(length));
     jObj.insert("n", QJsonValue::fromVariant(r_index));
     jObj.insert("type", QJsonValue::fromVariant(type));
@@ -45,8 +45,8 @@ Lens Lens::fromJsonObject(QJsonObject jObj)
 {
     this->coord.first = jObj.value("x").toDouble();
     this->coord.second = jObj.value("y").toDouble();
-    this->radius.first = jObj.value("R2").toDouble();
-    this->radius.second = -jObj.value("R1").toDouble();
+    this->radius.first = -jObj.value("R2").toDouble();
+    this->radius.second = jObj.value("R1").toDouble();
     this->length = jObj.value("l").toDouble();
     this->r_index = jObj.value("n").toDouble();
     this->type = jObj.value("type").toString();

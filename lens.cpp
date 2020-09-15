@@ -85,9 +85,10 @@ void Lens::draw(QGraphicsScene* scene) const
     double b = radius.second * cos(angle_right);
 
     //координаты левого и правого центров окружностей
-    std::pair<double, double> coord_left = std::pair <double, double> (coord.first - a * cos(pi * angle / 180), coord.second + a * sin(pi * angle / 180));
+    //ширина добавлена для толстых линз
+    std::pair<double, double> coord_left = std::pair <double, double> (coord.first - a * cos(pi * angle / 180) + width / 2, coord.second + a * sin(pi * angle / 180));
 
-    std::pair<double, double> coord_right = std::pair<double, double> (coord.first + b * cos(pi * angle / 180), coord.second - b * sin(pi * angle /180));
+    std::pair<double, double> coord_right = std::pair<double, double> (coord.first + b * cos(pi * angle / 180) - width / 2, coord.second - b * sin(pi * angle /180));
 
 
     //начинаем создавать дугу
@@ -103,17 +104,24 @@ void Lens::draw(QGraphicsScene* scene) const
     QPainterPath path_right;
 
     // первая дуга
-
     path_left.moveTo(coord_left.first + radius.first * cos(angle_left + pi * angle / 180) , (coord_left.second - radius.first * sin(angle_left + pi * angle / 180)));
 
     path_left.arcTo(coord_left.first - radius.first, coord_left.second - radius.first, 2 * radius.first, 2 * radius.first, 180 * angle_left / pi + angle, -2 * 180 * angle_left / pi);
     scene->addPath(path_left);
     //вторая дуга
-
     path_right.moveTo(coord_right.first - radius.second * cos(angle_right - pi * angle / 180), (coord_right.second - radius.second * sin(angle_right - pi * angle / 180)));
 
     path_right.arcTo(coord_right.first - radius.second, coord_right.second - radius.second, 2 * radius.second, 2 * radius.second, 180 - 180 * angle_right / pi + angle, 2 * 180 * angle_right / pi);
     scene->addPath(path_right);
+
+    //прорисовка боковых частей линзы
+    if(width > 0)
+    {
+        double x1 = coord_left.first + radius.first * cos(angle_left + pi * angle / 180);
+        double y1 = coord_left.second - radius.first * sin(angle_left + pi * angle / 180);
+        scene->addLine(x1 , y1, x1 - width, y1);
+        scene->addLine(x1, y1 + length, x1 - width, y1 + length);
+    }
 /*
 
     if(type == type_convex)

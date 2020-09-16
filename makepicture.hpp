@@ -15,6 +15,9 @@ public:
     explicit MakePicture(QWidget *parent = nullptr);
     ~MakePicture();
 
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::MakePicture *ui;
 };

@@ -12,3 +12,8 @@ MakePicture::~MakePicture()
 {
     delete ui;
 }
+
+void MakePicture::on_buttonBox_accepted()
+{
+    this->setVisible(false);
+}

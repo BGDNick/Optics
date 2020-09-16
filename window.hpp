@@ -7,6 +7,7 @@
 #include "line.hpp"
 #include "lens.hpp"
 #include "light.hpp"
+#include "makepicture.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Window; }
@@ -77,6 +78,8 @@ private slots:
 
     void on_actionDraw_triggered();
 
+    void on_actionCreate_triggered();
+
 public:
     QList<Line> lines;
     QList<Lens> lens;
@@ -84,8 +87,8 @@ public:
     //QList<Rect> rects;
     Ui::Window *ui;
     std::unique_ptr<QGraphicsScene> scene;
+    MakePicture secondScreen;
     //QGraphicsScene *scene;
-    QMap<QString, const QLibrary> libs;
 private:
     std::pair<double, double> mainFrame = std::make_pair(500.0, 500.0);
     bool is_saved = true; 
@@ -93,6 +96,7 @@ private:
     QGraphicsView view;
     QString currentFile;
     double current_scale = 0.0;
+    const QLibrary lib;
 
 
 

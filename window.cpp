@@ -6,13 +6,12 @@
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::Window)
+    , ui(new Ui::Window),
+      secondScreen()
 {
     //start of lib code
     const QString file_path = "./function_name";
     const QLibrary lib1(file_path);
-    
-
     //end of lib code
 
     ui->setupUi(this);
@@ -29,6 +28,7 @@ Window::Window(QWidget *parent)
 
     //дополнительные действия
     this->setFixedSize(1280, 720);
+    secondScreen.setVisible(false);
     // выключение некоторых полей
     on_comboBoxLightType_activated("Single");
     ui->progressBar->setVisible(false);
@@ -381,6 +381,7 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     added_lens.radius = std::pair<double, double>(ui->lineEditLensRadiusLeft->text().toDouble(),
                                                   ui->lineEditLensRadiusRight->text().toDouble());
     added_lens.length = ui->lineEditLensLength->text().toDouble();
+    added_lens.width = ui->lineEditLensWidth->text().toDouble();
     added_lens.r_index = ui->lineEditLensR_Index->text().toDouble();
     added_lens.name = ui->lineEditLensName->text();
     added_lens.type = "Flat"; //константа перечисления
@@ -423,6 +424,7 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     ui->lineEditLensCoordX->clear();
     ui->lineEditLensCoordY->clear();
     ui->lineEditLensLength->clear();
+    ui->lineEditLensWidth->clear();
     ui->lineEditLensRadiusLeft->clear();
     ui->lineEditLensRadiusRight->clear();
     ui->lineEditLensR_Index->clear();
@@ -569,6 +571,7 @@ void Window::on_listWidget_itemClicked(QListWidgetItem *item)
                 ui->lineEditLensCoordX->setText(QString::number(l.coord.first));
                 ui->lineEditLensCoordY->setText(QString::number(l.coord.second));
                 ui->lineEditLensLength->setText(QString::number(l.length));
+                ui->lineEditLensWidth->setText(QString::number(l.width));
                 ui->lineEditLensName->setText(l.name);
                 ui->lineEditLensRadiusLeft->setText(QString::number(l.radius.first));
                 ui->lineEditLensRadiusRight->setText(QString::number(l.radius.second));
@@ -1129,4 +1132,9 @@ void Window::on_actionLines_triggered()
 void Window::on_actionDraw_triggered()
 {
     on_pushButtonCalculate_clicked();
+}
+
+void Window::on_actionCreate_triggered()
+{
+    secondScreen.setVisible(true);
 }

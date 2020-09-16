@@ -189,7 +189,7 @@ padding:30px;
       <x>970</x>
       <y>20</y>
       <width>311</width>
-      <height>251</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -202,7 +202,7 @@ padding:30px;
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_5">
      <property name="geometry">
@@ -210,7 +210,7 @@ padding:30px;
        <x>0</x>
        <y>0</y>
        <width>309</width>
-       <height>195</height>
+       <height>205</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -283,7 +283,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>130</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -299,7 +299,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>100</y>
+        <y>130</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -309,7 +309,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>130</y>
+        <y>160</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -325,7 +325,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>130</y>
+        <y>160</y>
         <width>126</width>
         <height>24</height>
        </rect>
@@ -343,7 +343,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>160</y>
+        <y>180</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -374,6 +374,32 @@ padding:30px;
        <string>Lens</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: italic 10pt &quot;Arial&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Width</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEditLensWidth">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>100</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="light">
      <property name="geometry">
@@ -381,7 +407,7 @@ padding:30px;
        <x>0</x>
        <y>0</y>
        <width>309</width>
-       <height>195</height>
+       <height>205</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -615,7 +641,7 @@ padding:30px;
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>270</y>
+      <y>280</y>
       <width>312</width>
       <height>181</height>
      </rect>
@@ -628,13 +654,16 @@ padding:30px;
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>450</y>
+      <y>460</y>
       <width>312</width>
-      <height>201</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
+    </property>
+    <property name="undoRedoEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonTextEnter">
@@ -722,8 +751,15 @@ padding:30px;
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
    </widget>
+   <widget class="QMenu" name="menuPicture">
+    <property name="title">
+     <string>Picture</string>
+    </property>
+    <addaction name="actionCreate"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuPicture"/>
   </widget>
   <action name="actionNew">
    <property name="text">
@@ -793,6 +829,11 @@ padding:30px;
   <action name="actionDraw">
    <property name="text">
     <string>Draw</string>
+   </property>
+  </action>
+  <action name="actionCreate">
+   <property name="text">
+    <string>Create</string>
    </property>
   </action>
  </widget>

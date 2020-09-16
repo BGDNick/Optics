@@ -1,6 +1,7 @@
 #ifndef INCLUDEALL_HPP
 #define INCLUDEALL_HPP
 
+#include <cmath>
 #include <cstdlib>
 #include <memory>
 #include <string>

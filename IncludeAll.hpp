@@ -24,6 +24,7 @@
 #include <QListWidgetItem>
 #include <QMap>
 #include <QMessageBox>
+#include <QPainter>
 #include <QtCore>
 #include <QTcpServer>
 #include <QTcpSocket>

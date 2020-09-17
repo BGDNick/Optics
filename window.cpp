@@ -403,8 +403,7 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
     }
 
     //проверка на коректность введенных данных
-    if((added_lens.radius.first<=0)||(added_lens.radius.second<=0)||(added_lens.length <= 0) ||
-            (added_lens.radius.first < added_lens.length / 2 + 1) ||(added_lens.radius.second) < (added_lens.length / 2 + 1) ||
+    if((abs(added_lens.radius.first) < added_lens.length / 2 + 1) ||(abs(added_lens.radius.second) < (added_lens.length / 2 + 1)) ||
             added_lens.r_index > 5)
     {
         QMessageBox::information(this, "Warning", "Incorrect lens' data");
@@ -739,9 +738,9 @@ void Window::on_pushButtonCalculate_2_clicked()
         lines.clear();
         QJsonDocument jDoc = QJsonDocument::fromJson(output.toUtf8());
         QJsonObject jObj = jDoc.object();
-        
+
         QJsonArray jArr_lines = jObj.value("line").toArray();
-        
+
         foreach(QJsonValue jValue, jArr_lines)
         {
             QJsonObject jLine = jValue.toObject();

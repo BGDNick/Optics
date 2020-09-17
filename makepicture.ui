@@ -45,58 +45,6 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>90</y>
-     <width>91</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <item>
-     <widget class="QDoubleSpinBox" name="doubleSpinBoxR"/>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="doubleSpinBoxB"/>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="doubleSpinBoxG"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>470</x>
-     <y>90</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>RGB</string>
-   </property>
-  </widget>
-  <widget class="QGraphicsView" name="graphicsViewColor">
-   <property name="geometry">
-    <rect>
-     <x>470</x>
-     <y>112</y>
-     <width>30</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QRadioButton" name="radioButton">
    <property name="geometry">
     <rect>
@@ -113,6 +61,97 @@
    </property>
    <property name="text">
     <string>Eraser</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>90</y>
+     <width>41</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>RGB</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGraphicsView" name="graphicsViewColor"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>537</x>
+     <y>90</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QSpinBox" name="spinBoxR">
+      <property name="maximum">
+       <number>255</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="spinBoxG">
+      <property name="maximum">
+       <number>255</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="spinBoxB">
+      <property name="maximum">
+       <number>255</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QSpinBox" name="spinBox">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>200</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>205</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Quantity</string>
    </property>
   </widget>
  </widget>

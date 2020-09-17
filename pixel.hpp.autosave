@@ -1,0 +1,20 @@
+#ifndef PIXEL_HPP
+#define PIXEL_HPP
+#include "IncludeAll.hpp"
+
+class Pixel
+{
+public:
+    Pixel();
+    
+    double x;
+    double y;
+    double z;
+    size_t definition;
+    int r;
+    int g;
+    int b;
+    
+};
+
+#endif // PIXEL_HPP

@@ -1,0 +1,13 @@
+#include "pixel.hpp"
+
+Pixel::Pixel():
+    r(0), g(0), b(0),
+    definition(1),
+    x(0), y(0), z(0)
+{
+
+}
+Pixel::Pixel(double _x, double _y, double _z, size_t _definition, int _r, int _g, int _b):
+{
+    
+}

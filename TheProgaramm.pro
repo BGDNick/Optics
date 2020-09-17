@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     makepicture.cpp \
     objects.cpp \
+    pixel.cpp \
     rectangle.cpp \
     window.cpp
 
@@ -33,6 +34,7 @@ HEADERS += \
     line.hpp \
     makepicture.hpp \
     objects.hpp \
+    pixel.hpp \
     rectangle.hpp \
     window.hpp\
 

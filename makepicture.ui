@@ -131,9 +131,15 @@
     <rect>
      <x>540</x>
      <y>200</y>
-     <width>101</width>
+     <width>91</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>100</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -152,6 +158,40 @@
    </property>
    <property name="text">
     <string>Quantity</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>240</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Definition</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBoxDefinition">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>240</y>
+     <width>91</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>100</number>
    </property>
   </widget>
  </widget>

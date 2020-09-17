@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMouseEvent>
 #include <iostream>
+#include "pixel.hpp"
 
 namespace Ui {
 class MakePicture;
@@ -14,7 +15,7 @@ class MakePicture : public QDialog
     Q_OBJECT
 
 public:
-    void mouseMoveEvent(QMouseEvent *event) override;
+    //void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
@@ -32,10 +33,13 @@ private slots:
 
     void on_spinBox_valueChanged(int arg1);
 
+    void on_spinBoxDefinition_valueChanged(int arg1);
+
 private:
     Ui::MakePicture *ui;
     std::unique_ptr<QGraphicsScene> colorScene;
     std::unique_ptr<QGraphicsScene> drawingScene;
+    std::vector<std::vector<Pixel>> pixels;
 };
 
 #endif // MAKEPICTURE_HPP

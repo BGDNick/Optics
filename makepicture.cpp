@@ -20,8 +20,10 @@ MakePicture::MakePicture(QWidget *parent) :
     drawingScene = std::make_unique<QGraphicsScene>(this);
     ui->graphicsViewColor->setScene(colorScene.get());
     ui->graphicsViewPicture->setScene(drawingScene.get());
-
-    drawingScene.get()->addRect(0, 0, 440, 440);
+    std::vector<Pixel> first_pixel;
+    first_pixel.push_back(Pixel(0, 0, 0, 1, 255, 255, 255, 440, 440));
+    pixels.push_back(first_pixel);
+    pixels.back().back().drawPixel(drawingScene.get());
 }
 
 MakePicture::~MakePicture()
@@ -61,48 +63,39 @@ void MakePicture::on_spinBoxB_valueChanged(int arg1)
     colorScene.get()->clear();
     colorScene.get()->addRect(0, 0, 30, 30,QPen(QColor(red, green, blue)), QBrush(QColor(red, green, blue)));
 }
-
+/*
 void MakePicture::mouseMoveEvent(QMouseEvent *event)
 {
     //MakePicture::QWidget::mouseMoveEvent(event);
     std::cout << event->x() << " " << event->y() << std::endl;
 }
+*/
 
 void MakePicture::mousePressEvent(QMouseEvent *event)
 {
     int x = event->x();
     int y = event->y();
-    //QWidget::mousePressEvent(event);
+
+    //проверка на то находится ли нажатие в нужной области
     if(((x<0)||(x>440)||(y<0)||(y>440)))
     {
         std::cout << false << std::endl;
         std::cout << event->x() << " " << event->y() << std::endl;
         return;
     }
-    drawingScene.get()->clear();
-    int arg1 = ui->spinBox->text().toInt();
 
-    for(int i = 0; i < arg1; i++)
-    {
-        for(int j = 0; j < arg1; j ++)
-        {
-            if(QRect(0 + i * 440 / arg1, 0 + j * 440 / arg1, 440 / arg1, 440 / arg1).contains(event->x(), event->y()))
-            {
-                size_t red = ui->spinBoxR->text().toInt();
-                size_t blue = ui->spinBoxB->text().toInt();
-                size_t green = ui->spinBoxG->text().toInt();
-
-                drawingScene.get()->addRect(0 + i * 440 / arg1, 0 + j * 440 / arg1, 440 / arg1, 440 / arg1,
-                                            QPen(QColor(red, green, blue)), QBrush(QColor(red, green, blue)));
-            }
-            else
-            {
-                drawingScene.get()->addRect(0 + i * 440 / arg1, 0 + j * 440 / arg1, 440 / arg1, 440 / arg1);
-            }
-
-        }
-
-    }
+    //закрашивание нужного пикселя
+    int quantity = ui->spinBox->text().toInt();
+    double freq = 440 / quantity;
+    int definition = ui->spinBoxDefinition->text().toInt();
+    int number_x = int( x / freq);
+    int number_y = int( y / freq);
+    int r = ui->spinBoxR->text().toInt();
+    int g = ui->spinBoxG->text().toInt();
+    int b = ui->spinBoxB->text().toInt();
+    Pixel new_pixel(freq * number_x, freq * number_y, 0.0, definition, r, g, b, freq, freq);
+    new_pixel.drawPixel(drawingScene.get());
+    pixels.at(number_x).at(number_y) = new_pixel;
 
 }
 
@@ -114,12 +107,55 @@ void MakePicture::mouseReleaseEvent(QMouseEvent *event)
 void MakePicture::on_spinBox_valueChanged(int arg1)
 {
     drawingScene.get()->clear();
-    for(int i = 0; i < arg1; i++)
+    int first = pixels.size();
+    int second = arg1;
+    int delta = second - first;
+    //если нет изменений
+    if(delta == 0)
     {
-        for(int j = 0; j < arg1; j ++)
+        std::cout << "return" << std::endl;
+        return;
+    }
+
+    int r = ui->spinBoxR->text().toInt();
+    int g = ui->spinBoxG->text().toInt();
+    int b = ui->spinBoxB->text().toInt();
+    int definition = ui->spinBoxDefinition->text().toInt();
+    int quantity = arg1;
+    double freq = 440 / quantity;
+
+    bool sign = (delta > 0) ;
+    std::cout << sign << std::endl;
+    delta = abs(delta);
+    // если разница больше нуля
+    if(sign)
+    {
+        // заполнение дополнительными пикселями
+        for(int i = 0; i < delta; i++)
         {
-            drawingScene.get()->addRect(0 + i * 440 / arg1, 0 + j * 440 / arg1, 440 / arg1, 440 / arg1);
+            pixels.at(i).push_back(Pixel());
+        }
+        for(int i = 0; i < delta; i++)
+        {
+            pixels.push_back(std::vector<Pixel>(quantity, Pixel()));
+        }
+
+        std::cout << pixels.size() << " " << pixels.at(0).size();
+        //настройка всех пикселей и их прорисовка
+        for(int i = 0; i < pixels.size(); i++)
+        {
+            for(int j = 0; j < pixels.size(); j ++)
+            {
+                pixels.at(i).at(j).setSize(freq, freq);
+                pixels.at(i).at(j).drawPixel(drawingScene.get());
+            }
         }
 
     }
+
+}
+
+void MakePicture::on_spinBoxDefinition_valueChanged(int arg1)
+{
+
 }

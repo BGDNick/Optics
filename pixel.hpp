@@ -1,6 +1,7 @@
 #ifndef PIXEL_HPP
 #define PIXEL_HPP
 #include "IncludeAll.hpp"
+#include <iostream>
 
 class Pixel
 {
@@ -12,6 +13,14 @@ public:
     void drawPixel(QGraphicsScene* _scene);
 
     void setSize(double _width, double _height);
+
+    void setPixel1(double _width, double _height, double _x, double _y, size_t _definition);
+
+    void print();
+
+    QJsonObject toJsonObject() const;
+
+    Pixel fromJsonObject(QJsonObject jObj);
 
     double x;
     double y;

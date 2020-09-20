@@ -756,6 +756,7 @@ padding:30px;
      <string>Picture</string>
     </property>
     <addaction name="actionCreate"/>
+    <addaction name="actionAdd_Picture"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -834,6 +835,11 @@ padding:30px;
   <action name="actionCreate">
    <property name="text">
     <string>Create</string>
+   </property>
+  </action>
+  <action name="actionAdd_Picture">
+   <property name="text">
+    <string>Add Picture</string>
    </property>
   </action>
  </widget>

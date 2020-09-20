@@ -27,3 +27,50 @@ void Pixel::setSize(double _width, double _height)
     this->width = _width;
     this->height = _height;
 }
+
+void Pixel::setPixel1(double _width, double _height, double _x, double _y, size_t _definition)
+{
+    this->width = _width;
+    this->height = _height;
+    this->x = _x;
+    this->y = _y;
+    this->definition = _definition;
+}
+
+void Pixel::print()
+{
+    std::cout << "(" << x << " " << y <<") " << width    << " " << height <<std::endl;
+}
+
+Pixel Pixel::fromJsonObject(QJsonObject jObj)
+{
+
+    this->r = jObj.value("r").toInt();
+    this->g = jObj.value("g").toInt();
+    this->b = jObj.value("b").toInt();
+    this->definition = jObj.value("definition").toInt();
+    this->x = jObj.value("z").toDouble();
+    this->y = jObj.value("y").toDouble();
+    this->z = jObj.value("x").toDouble();
+    this->width = jObj.value("width").toDouble();
+    this->height = jObj.value("height").toDouble();
+
+    return *this;
+}
+
+QJsonObject Pixel::toJsonObject() const
+{
+    QJsonObject jObj;
+
+    jObj.insert("r", QJsonValue::fromVariant(r));
+    jObj.insert("g", QJsonValue::fromVariant(g));
+    jObj.insert("b", QJsonValue::fromVariant(b));
+    jObj.insert("definition", QJsonValue::fromVariant(definition));
+    jObj.insert("x", QJsonValue::fromVariant(z));
+    jObj.insert("y", QJsonValue::fromVariant(y));
+    jObj.insert("z", QJsonValue::fromVariant(x));
+    jObj.insert("width", QJsonValue::fromVariant(width));
+    jObj.insert("height", QJsonValue::fromVariant(height));
+
+    return jObj;
+}

@@ -36,12 +36,14 @@ Window::Window(QWidget *parent)
     ui->graphicsView->setScene(scene.get());
 
     std::cout << windowTitle().toStdString() << std::endl;
+    on_pushButtonCalculate_clicked();
 
 }
 
 Window::~Window()
 {
     delete ui;
+    secondScreen.~MakePicture();
     //Server sender_of_the_end(this, false); // конец работы сервера
 }
 
@@ -106,7 +108,6 @@ void Window::load()
     lights.clear();
     items.clear();
     ui->listWidget->clear();
-
     scene.get()->clear();
 
     //считвание файла
@@ -324,7 +325,7 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
 {
     scene.get()->clear();
 
-    scene->addRect(-mainFrame.first, - mainFrame.second, 2 * mainFrame.first, 2 * mainFrame.second);
+    scene.get()->addRect(-mainFrame.first, - mainFrame.second, 2 * mainFrame.first, 2 * mainFrame.second);
 
     QPen pen;
     pen.setWidth(int(current_scale));
@@ -332,7 +333,7 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
     if(check[0])
     {
         foreach (Line l, lines) {
-            scene->addLine(l.coord1.first, l.coord1.second, l.coord2.first, l.coord2.second, pen);
+            scene.get()->addLine(l.coord1.first, l.coord1.second, l.coord2.first, l.coord2.second, pen);
         }
     }
 
@@ -1136,4 +1137,9 @@ void Window::on_actionDraw_triggered()
 void Window::on_actionCreate_triggered()
 {
     secondScreen.setVisible(true);
+}
+
+void Window::on_actionAdd_Picture_triggered()
+{
+    ui->plainTextEdit->setPlainText(this->getString());
 }

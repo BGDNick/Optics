@@ -80,6 +80,8 @@ private slots:
 
     void on_actionCreate_triggered();
 
+    void on_actionAdd_Picture_triggered();
+
 public:
     QList<Line> lines;
     QList<Lens> lens;
@@ -97,8 +99,6 @@ private:
     QString currentFile;
     double current_scale = 0.0;
     const QLibrary lib;
-
-
 
 };
 #endif // WINDOW_HPP

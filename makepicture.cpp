@@ -1,7 +1,7 @@
 #include "makepicture.hpp"
 #include "ui_makepicture.h"
 
-MakePicture::MakePicture(QWidget *parent) :
+MakePicture::MakePicture(QWidget *parent):
     QDialog(parent),
     ui(new Ui::MakePicture)
 {
@@ -33,7 +33,33 @@ MakePicture::~MakePicture()
 
 void MakePicture::on_buttonBox_accepted()
 {
-    this->setVisible(false);
+    //вставка отрезков
+    QJsonArray jArrPixels;
+    foreach(std::vector<Pixel> v, pixels)
+    {
+        foreach(Pixel p, v)
+        {
+            jArrPixels.append(p.toJsonObject());
+        }
+
+    }
+
+    QJsonObject jObj;
+
+    jObj.insert("pixel",jArrPixels);
+
+
+    QJsonDocument jDoc(jObj);
+
+    QString text;
+    text = jDoc.toJson(QJsonDocument::Compact);
+
+    std::cout << text.toStdString() << std::endl;
+
+
+    std::cout << "before" << std::endl;
+    output = &jArrPixels;
+    std::cout << "after" << std::endl;
 }
 
 
@@ -85,7 +111,7 @@ void MakePicture::mousePressEvent(QMouseEvent *event)
     }
 
     //закрашивание нужного пикселя
-    int quantity = ui->spinBox->text().toInt();
+    int quantity = pixels.size();
     double freq = 440 / quantity;
     int definition = ui->spinBoxDefinition->text().toInt();
     int number_x = int( x / freq);
@@ -106,53 +132,79 @@ void MakePicture::mouseReleaseEvent(QMouseEvent *event)
 
 void MakePicture::on_spinBox_valueChanged(int arg1)
 {
-    drawingScene.get()->clear();
     int first = pixels.size();
     int second = arg1;
-    int delta = second - first;
+    int delta = abs(second - first);
+    std::cout << delta << std::endl;
     //если нет изменений
     if(delta == 0)
     {
         std::cout << "return" << std::endl;
         return;
     }
-
-    int r = ui->spinBoxR->text().toInt();
-    int g = ui->spinBoxG->text().toInt();
-    int b = ui->spinBoxB->text().toInt();
     int definition = ui->spinBoxDefinition->text().toInt();
     int quantity = arg1;
     double freq = 440 / quantity;
-
-    bool sign = (delta > 0) ;
-    std::cout << sign << std::endl;
-    delta = abs(delta);
+    std::cout << freq << std::endl;
+    drawingScene.get()->clear();
     // если разница больше нуля
-    if(sign)
+
+    if((second - first) >= 0)
     {
+        std::cout << "if" << std::endl;
         // заполнение дополнительными пикселями
-        for(int i = 0; i < delta; i++)
+        for(int i = 0; i < pixels.size(); i++)
         {
-            pixels.at(i).push_back(Pixel());
+            for(int j = 0; j < delta; j++)
+            {
+                pixels.at(i).push_back(Pixel());
+            }
         }
         for(int i = 0; i < delta; i++)
         {
             pixels.push_back(std::vector<Pixel>(quantity, Pixel()));
         }
 
-        std::cout << pixels.size() << " " << pixels.at(0).size();
+        std::cout << pixels.size() << " || " << pixels.at(0).size() << std::endl;;
         //настройка всех пикселей и их прорисовка
         for(int i = 0; i < pixels.size(); i++)
         {
-            for(int j = 0; j < pixels.size(); j ++)
+            for(int j = 0; j < pixels.size(); j++)
             {
-                pixels.at(i).at(j).setSize(freq, freq);
+                pixels.at(i).at(j).setPixel1(freq, freq, freq * i, freq * j, definition);
                 pixels.at(i).at(j).drawPixel(drawingScene.get());
+                pixels.at(i).at(j).print();
             }
         }
 
     }
+    else
+    {
+        std::cout << "else" << std::endl;
+        //удаление ненцужных пикселей
+        for(int i = 0; i < pixels.size(); i++)
+        {
+            for(int j = 0; j < delta; j++)
+            {
+                pixels.at(i).pop_back();
+            }
+        }
+        for(int i = 0; i < delta; i++)
+        {
+            pixels.pop_back();
+        }
 
+        //настройка всех пикселей и их прорисовка
+        for(int i = 0; i < pixels.size(); i++)
+        {
+            for(int j = 0; j < pixels.size(); j++)
+            {
+                pixels.at(i).at(j).setPixel1(freq, freq, freq * i, freq * j, definition);
+                pixels.at(i).at(j).drawPixel(drawingScene.get());
+                pixels.at(i).at(j).print();
+            }
+        }
+    }
 }
 
 void MakePicture::on_spinBoxDefinition_valueChanged(int arg1)

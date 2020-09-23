@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     makepicture.cpp \
     objects.cpp \
+    picture.cpp \
     pixel.cpp \
     rectangle.cpp \
     window.cpp
@@ -34,12 +35,14 @@ HEADERS += \
     line.hpp \
     makepicture.hpp \
     objects.hpp \
+    picture.hpp \
     pixel.hpp \
     rectangle.hpp \
     window.hpp\
 
 FORMS += \
     makepicture.ui \
+    picture.ui \
     window.ui
 
 RC_ICONS = Logo.ico.ico

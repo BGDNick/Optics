@@ -202,7 +202,7 @@ padding:30px;
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_5">
      <property name="geometry">
@@ -210,7 +210,7 @@ padding:30px;
        <x>0</x>
        <y>0</y>
        <width>309</width>
-       <height>232</height>
+       <height>205</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -400,6 +400,11 @@ padding:30px;
        </rect>
       </property>
      </widget>
+    </widget>
+    <widget class="QWidget" name="Screen">
+     <attribute name="label">
+      <string>Page</string>
+     </attribute>
     </widget>
    </widget>
    <widget class="QProgressBar" name="progressBar">

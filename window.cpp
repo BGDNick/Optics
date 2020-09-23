@@ -29,8 +29,11 @@ Window::Window(QWidget *parent)
     //дополнительные действия
     this->setFixedSize(1280, 720);
     secondScreen.setVisible(false);
+    //добавление первого пикселя
+    pixels.push_back(secondScreen.pixels.at(0).at(0));
+    ui->plainTextEdit->setPlainText(this->getString());
     // выключение некоторых полей
-    on_comboBoxLightType_activated("Single");
+    //on_comboBoxLightType_activated("Single");
     ui->progressBar->setVisible(false);
     scene = std::make_unique<QGraphicsScene>(this);
     ui->graphicsView->setScene(scene.get());
@@ -43,7 +46,6 @@ Window::Window(QWidget *parent)
 Window::~Window()
 {
     delete ui;
-    secondScreen.~MakePicture();
     //Server sender_of_the_end(this, false); // конец работы сервера
 }
 
@@ -105,7 +107,7 @@ void Window::load()
     lines.clear();
     //rects.clear();
     lens.clear();
-    lights.clear();
+    pixels.clear();
     items.clear();
     ui->listWidget->clear();
     scene.get()->clear();
@@ -127,7 +129,7 @@ void Window::load()
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
     QJsonArray jArr_lens = jObj.value("lens").toArray();
-    QJsonArray jArr_lights = jObj.value("sour").toArray();
+    QJsonArray jArr_pixels = jObj.value("sour").toArray();
 
     // добавление линий
     foreach(QJsonValue jValue, jArr_lines)
@@ -137,6 +139,28 @@ void Window::load()
         temp.fromJsonObject(jLine);
         lines.append(temp);
     }
+
+    //добавление пикселей
+    foreach (QJsonValue jValue, jArr_pixels)
+    {
+        QJsonObject jPixel = jValue.toObject();
+        Pixel temp;
+        temp.fromJsonObject(jPixel);
+        pixels.append(temp);
+    }
+    //добавлениие и прорисовка пикселей во втором окне
+    secondScreen.pixels.clear();
+    int amount = int(sqrt(pixels.size()));
+
+    for(int i = 0; i < amount; i++)
+    {
+        secondScreen.pixels.push_back(std::vector<Pixel>());
+        for(int j = 0; j < amount; j++)
+        {
+            secondScreen.pixels.at(i).push_back(pixels.at(i+j));
+        }
+    }
+    secondScreen.on_spinBox_valueChanged(secondScreen.pixels.size());
 
     /*// добавление прямоугольников
     foreach(QJsonValue jValue, jArr_rects)
@@ -167,19 +191,6 @@ void Window::load()
         items.append(*item);
     }
 
-    // добавление источников света
-    foreach(QJsonValue jValue, jArr_lights)
-    {
-        QJsonObject jLight = jValue.toObject();
-        Light temp;
-        temp.fromJsonObject(jLight);
-        lights.append(temp);
-
-        QListWidgetItem* item = new QListWidgetItem(temp.name, ui->listWidget); //утечка
-        item->setWhatsThis("Light");
-        ui->listWidget->addItem(item);
-        items.append(*item);
-    }
 
     currentFile = fileName;
     is_saved = true;
@@ -209,7 +220,7 @@ void Window::newDocument()
     lines.clear();
     //rects.clear();
     lens.clear();
-    lights.clear();
+    pixels.clear();
 
     on_actionAll_triggered();
     items.clear();
@@ -232,7 +243,7 @@ void Window::on_pushButtonTextEnter_clicked()
     lines.clear();
     //rects.clear();
     lens.clear();
-    lights.clear();
+    pixels.clear();
     items.clear();
     ui->listWidget->clear();
     //паста из load
@@ -250,7 +261,7 @@ void Window::on_pushButtonTextEnter_clicked()
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
     QJsonArray jArr_lens = jObj.value("lens").toArray();
-    QJsonArray jArr_lights = jObj.value("sour").toArray();
+    QJsonArray jArr_pixels = jObj.value("sour").toArray();
 
     // добавление линий
     foreach(QJsonValue jValue, jArr_lines)
@@ -290,19 +301,28 @@ void Window::on_pushButtonTextEnter_clicked()
         items.append(*item);
     }
 
-    // добавление источников света
-    foreach(QJsonValue jValue, jArr_lights)
+    //добавление пикселей
+    foreach (QJsonValue jValue, jArr_pixels)
     {
-        QJsonObject jLight = jValue.toObject();
-        Light temp;
-        temp.fromJsonObject(jLight);
-        lights.append(temp);
-
-        QListWidgetItem* item = new QListWidgetItem(temp.name, ui->listWidget); //утечка
-        item->setWhatsThis("Light");
-        ui->listWidget->addItem(item);
-        items.append(*item);
+        QJsonObject jPixel = jValue.toObject();
+        Pixel temp;
+        temp.fromJsonObject(jPixel);
+        pixels.append(temp);
     }
+    //добавлениие и прорисовка пикселей во втором окне
+    secondScreen.pixels.clear();
+    int amount = int(sqrt(pixels.size()));
+    for(int i = 0; i < amount; i++)
+    {
+        secondScreen.pixels.push_back(std::vector<Pixel>());
+        for(int j = 0; j < amount; j++)
+        {
+            secondScreen.pixels.at(i).push_back(pixels.at(i+j));
+        }
+    }
+    //прорисовка делается таким образом, что количество пикселей не менятся
+    secondScreen.on_spinBox_valueChanged(secondScreen.pixels.size());
+
 
     ui->plainTextEdit->setPlainText(text);
     on_pushButtonCalculate_clicked();
@@ -352,6 +372,7 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
             l.draw(scene.get());
         }
     }
+    /*
     //отрисовка источников света
     if(check[2])
     {
@@ -359,7 +380,10 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
         {
             l.draw(scene.get());
         }
-    }
+    }*/
+
+    //отрисовка местоположения изображения
+    scene.get()->addRect(0, 0, 20, 440, QPen(), QBrush(QColor(255,255,0)));
 }
 
 void Window::on_toolButtonScaleInc_clicked() // кнопка увеличения масштаба картинки
@@ -531,6 +555,7 @@ void Window::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // если 
         }
         lens = temp;
     }
+    /*
     if(item->whatsThis() == "Light")
     {
         QList<Light> temp;
@@ -546,7 +571,7 @@ void Window::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // если 
             }
         }
         lights = temp;
-    }
+    }*/
 
     //отрисовка без удаленного предмета
     on_pushButtonCalculate_clicked();
@@ -597,6 +622,7 @@ void Window::on_listWidget_itemClicked(QListWidgetItem *item)
             }
         }
     }*/
+    /*
     else
     if(item->whatsThis() == "Light")
     {
@@ -627,13 +653,13 @@ void Window::on_listWidget_itemClicked(QListWidgetItem *item)
                 return;
             }
         }
-    }
+    }*/
 
 }
 
 
 
-
+/*
 void Window::on_comboBoxLightType_activated(const QString &arg1) //при изменении типа источника света
 {
     if(arg1 == "Single")
@@ -655,7 +681,8 @@ void Window::on_comboBoxLightType_activated(const QString &arg1) //при изм
     }
 
 }
-
+*/
+/*
 void Window::on_pushButtonLightAdd_clicked() //при нжатии на кнопку добавления ист света
 {
     lines.clear();
@@ -710,15 +737,15 @@ void Window::on_pushButtonLightAdd_clicked() //при нжатии на кноп
     // корректировка json текста
     ui->plainTextEdit->setPlainText(this->getString());
 }
+*/
 
-
-
+/*
 void Window::on_spinBoxLightAmount_valueChanged(int arg1) //будет удалено
 {
     //idle
 }
 
-
+*/
 void Window::on_doubleSpinBox_valueChanged(double arg1)
 {
     mainFrame.first = arg1;
@@ -781,7 +808,7 @@ void Window::removeAll()
     lines.clear();
     //rects.clear();
     lens.clear();
-    lights.clear();
+    pixels.clear();
 
     on_actionAll_triggered();
     items.clear();
@@ -831,19 +858,32 @@ QString Window::getString(bool flag)
 
     //вставка источников света
 
-    QJsonArray jArrLight;
-
-    foreach(Light l, lights)
+    QJsonArray jArrPixel;
+    //обновление пикселей
+    pixels.clear();
+    int amount = secondScreen.pixels.size();
+    std::cout << amount << std::endl;
+    for(int i = 0; i < amount; i++)
     {
-        jArrLight.append(l.toJsonObject());
+        for(int j = 0; j < amount; j++)
+        {
+            pixels.push_back(secondScreen.pixels.at(i).at(j));
+        }
     }
 
-    jObj.insert("sour", jArrLight);
+//
+    foreach(Pixel l, pixels)
+    {
+        jArrPixel.append(l.toJsonObject());
+    }
+
+
+    jObj.insert("sour", jArrPixel);
 
     QJsonDocument jDoc(jObj);
 
     QString text;
-    text = jDoc.toJson(QJsonDocument::Compact);
+    text = jDoc.toJson(QJsonDocument::Indented);
 
     return text;
 }

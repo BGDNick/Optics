@@ -60,11 +60,11 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
-    void on_comboBoxLightType_activated(const QString &arg1);
+    //void on_comboBoxLightType_activated(const QString &arg1);
 
-    void on_pushButtonLightAdd_clicked();
+    //void on_pushButtonLightAdd_clicked();
 
-    void on_spinBoxLightAmount_valueChanged(int arg1);
+    //void on_spinBoxLightAmount_valueChanged(int arg1);
 
     void on_doubleSpinBox_valueChanged(double arg1);
 
@@ -85,7 +85,7 @@ private slots:
 public:
     QList<Line> lines;
     QList<Lens> lens;
-    QList<Light> lights;
+    QList<Pixel> pixels;
     //QList<Rect> rects;
     Ui::Window *ui;
     std::unique_ptr<QGraphicsScene> scene;

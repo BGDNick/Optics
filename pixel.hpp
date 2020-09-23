@@ -18,6 +18,8 @@ public:
 
     void print();
 
+    void sumColor(int r, int g, int b);
+
     QJsonObject toJsonObject() const;
 
     Pixel fromJsonObject(QJsonObject jObj);

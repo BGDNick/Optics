@@ -8,6 +8,7 @@
 #include "lens.hpp"
 #include "light.hpp"
 #include "makepicture.hpp"
+#include "picture.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Window; }
@@ -82,6 +83,12 @@ private slots:
 
     void on_actionAdd_Picture_triggered();
 
+    void on_doubleSpinBoxScreenPos_valueChanged(double arg1);
+
+    void on_spinBoxScreenBrightLevel_valueChanged(int arg1);
+
+    void on_actionShow_Result_triggered();
+
 public:
     QList<Line> lines;
     QList<Lens> lens;
@@ -90,9 +97,11 @@ public:
     Ui::Window *ui;
     std::unique_ptr<QGraphicsScene> scene;
     MakePicture secondScreen;
+    Picture thirdScreen;
+    double screenPosition;
     //QGraphicsScene *scene;
 private:
-    std::pair<double, double> mainFrame = std::make_pair(500.0, 500.0);
+    std::pair<double, double> mainFrame = std::make_pair(1000, 1000);
     bool is_saved = true; 
     QList<QListWidgetItem> items;   
     QGraphicsView view;

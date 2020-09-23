@@ -76,7 +76,7 @@
       <double>10.000000000000000</double>
      </property>
      <property name="value">
-      <double>500.000000000000000</double>
+      <double>1000.000000000000000</double>
      </property>
     </widget>
     <widget class="QLabel" name="label_15">
@@ -123,7 +123,7 @@
       <double>10.000000000000000</double>
      </property>
      <property name="value">
-      <double>500.000000000000000</double>
+      <double>1000.000000000000000</double>
      </property>
     </widget>
    </widget>
@@ -202,7 +202,7 @@ padding:30px;
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_5">
      <property name="geometry">
@@ -210,7 +210,7 @@ padding:30px;
        <x>0</x>
        <y>0</y>
        <width>309</width>
-       <height>232</height>
+       <height>205</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -343,10 +343,15 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>180</y>
+        <y>185</y>
         <width>75</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Add</string>
@@ -398,6 +403,114 @@ padding:30px;
         <width>71</width>
         <height>20</height>
        </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>309</width>
+       <height>205</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Screen</string>
+     </attribute>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Position</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>80</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="statusTip">
+       <string>Количество лучей с ()</string>
+      </property>
+      <property name="text">
+       <string>Brighht Level</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxScreenBrightLevel">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>70</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxScreenPos">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>40</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <double>-10000000.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>10000000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>500.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonScreenAdd">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>158</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Add</string>
       </property>
      </widget>
     </widget>
@@ -535,6 +648,7 @@ padding:30px;
     </property>
     <addaction name="actionCreate"/>
     <addaction name="actionAdd_Picture"/>
+    <addaction name="actionShow_Result"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -618,6 +732,11 @@ padding:30px;
   <action name="actionAdd_Picture">
    <property name="text">
     <string>Add Picture</string>
+   </property>
+  </action>
+  <action name="actionShow_Result">
+   <property name="text">
+    <string>Show Result</string>
    </property>
   </action>
  </widget>

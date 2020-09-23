@@ -74,3 +74,33 @@ QJsonObject Pixel::toJsonObject() const
 
     return jObj;
 }
+
+void Pixel::sumColor(int _r, int _g, int _b)
+{
+    if((r + _r) >=255)
+    {
+        this->r = 255;
+    }
+    else
+    {
+        this->r = r + _r;
+    }
+
+    if((g + _g) >=255)
+    {
+        this->g = 255;
+    }
+    else
+    {
+        this->g = g + _g;
+    }
+
+    if((b + _b) >=255)
+    {
+        this->b = 255;
+    }
+    else
+    {
+        this->b = b + _b;
+    }
+}

@@ -4,20 +4,26 @@
 #include <objects.hpp>
 
 
-class Line: public Object
+class Line
 {
 public:
     Line();
 
     friend bool operator==(Line l1, Line l2);
 
-    Line(std::pair<double, double> p1, std::pair<double, double> p2, QMap<QString, int> i_rgb);
+    Line(double x1, double y1, double z1, double x2, double y2, double z2, QMap<QString, int> i_rgb);
 
     QJsonObject toJsonObject() const;
     Line fromJsonObject(QJsonObject jObj);
 
 public:
-    std::pair<double, double> coord2;
+    double x1;
+    double y1;
+    double z1;
+
+    double x2;
+    double y2;
+    double z2;
     QMap<QString, int> rgb;
 };
 

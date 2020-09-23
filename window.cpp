@@ -7,7 +7,8 @@
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window),
-      secondScreen()
+      secondScreen(),
+      thirdScreen()
 {
     //start of lib code
     const QString file_path = "./function_name";
@@ -29,6 +30,7 @@ Window::Window(QWidget *parent)
     //дополнительные действия
     this->setFixedSize(1280, 720);
     secondScreen.setVisible(false);
+    thirdScreen.setVisible(false);
     //добавление первого пикселя
     pixels.push_back(secondScreen.pixels.at(0).at(0));
     ui->plainTextEdit->setPlainText(this->getString());
@@ -40,6 +42,7 @@ Window::Window(QWidget *parent)
 
     std::cout << windowTitle().toStdString() << std::endl;
     on_pushButtonCalculate_clicked();
+    screenPosition = 500.0;
 
 }
 
@@ -353,7 +356,7 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
     if(check[0])
     {
         foreach (Line l, lines) {
-            scene.get()->addLine(l.coord1.first, l.coord1.second, l.coord2.first, l.coord2.second, pen);
+            scene.get()->addLine(l.x1, l.y1, l.x2, l.y2, pen);
         }
     }
 
@@ -1182,4 +1185,20 @@ void Window::on_actionCreate_triggered()
 void Window::on_actionAdd_Picture_triggered()
 {
     ui->plainTextEdit->setPlainText(this->getString());
+}
+
+void Window::on_doubleSpinBoxScreenPos_valueChanged(double arg1)
+{
+    thirdScreen.position = arg1;
+    screenPosition = arg1;
+}
+
+void Window::on_spinBoxScreenBrightLevel_valueChanged(int arg1)
+{
+    thirdScreen.bright_level = arg1;
+}
+
+void Window::on_actionShow_Result_triggered()
+{
+    thirdScreen.setVisible(true);
 }

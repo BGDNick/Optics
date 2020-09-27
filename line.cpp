@@ -28,30 +28,45 @@ QJsonObject Line::toJsonObject() const
 {
 
     QJsonObject jObj;
-    /*
-    double temp1[3] = {x1, y1, z1};
-    double temp2[3] = {x2, y2, z2};
-    jObj.insert("begin", QJsonValue::fromVariant(temp1));
-    jObj.insert("end", QJsonValue::fromVariant(temp2));
+    QJsonArray begin;
+    QJsonArray end;
+    //создание конченого и начального значения
+    begin.append(QJsonValue::fromVariant(x1));
+    begin.append(QJsonValue::fromVariant(y1));
+    begin.append(QJsonValue::fromVariant(z1));
+
+    end.append(QJsonValue::fromVariant(x2));
+    end.append(QJsonValue::fromVariant(y2));
+    end.append(QJsonValue::fromVariant(z2));
+
+    jObj.insert("begin", begin);
+    jObj.insert("end", end);
     jObj.insert("r", QJsonValue::fromVariant(rgb["r"]));
     jObj.insert("g", QJsonValue::fromVariant(rgb["g"]));
     jObj.insert("b", QJsonValue::fromVariant(rgb["b"]));
-    */
     return jObj;
 
 }
 
 Line Line::fromJsonObject(QJsonObject jObj)
 {
-    /*
-    this->coord1.first = jObj.value("x1").toDouble();
-    this->coord1.second = jObj.value("y1").toDouble();
-    this->coord2.first = jObj.value("x2").toDouble();
-    this->coord2.second = jObj.value("y2").toDouble();
+    QJsonArray begin;
+    QJsonArray end;
+
+    begin = jObj.value("begin").toArray();
+    end = jObj.value("end").toArray();
+
+    this->x1 = begin[0].toDouble();
+    this->y1 = begin[1].toDouble();
+    this->z1 = begin[2].toDouble();
+
+    this->x2 = end[0].toDouble();
+    this->y2 = end[1].toDouble();
+    this->z2 = end[2].toDouble();
     this->rgb["r"] = jObj.value("r").toInt();
     this->rgb["g"] = jObj.value("g").toInt();
     this->rgb["b"] = jObj.value("b").toInt();
-    */
+
     return *this;
 }
 
@@ -67,4 +82,11 @@ bool operator==(Line l1, Line l2)
         return true;
     }
     return false;
+}
+
+void Line::print()
+{
+    std::cout << x1 << "  " << y1 << "  " << z1 << std::endl;
+    std::cout << x2 << "  " << y2 << "  " << z2 << std::endl;
+    std::cout << rgb["r"] << "  " << rgb["g"] << "  " << rgb["b"] << std::endl;
 }

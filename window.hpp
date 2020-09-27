@@ -28,8 +28,9 @@ public:
 
     void send(bool flag = true);
 
+    void on_pushButtonCalculate_clicked();
 public slots:
-    void on_pushButtonCalculate_clicked(QVector<bool> check = {true, true, true, true});
+
 
     void on_pushButtonClear_clicked();
 
@@ -88,6 +89,9 @@ private slots:
     void on_spinBoxScreenBrightLevel_valueChanged(int arg1);
 
     void on_actionShow_Result_triggered();
+
+
+    void on_pushButton_clicked();
 
 public:
     QList<Line> lines;

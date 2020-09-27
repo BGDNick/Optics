@@ -126,6 +126,19 @@
       <double>1000.000000000000000</double>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>0</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
@@ -343,7 +356,7 @@ padding:30px;
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>185</y>
+        <y>182</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -495,24 +508,6 @@ padding:30px;
        <double>500.000000000000000</double>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButtonScreenAdd">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>158</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Add</string>
-      </property>
-     </widget>
     </widget>
    </widget>
    <widget class="QProgressBar" name="progressBar">
@@ -625,8 +620,6 @@ padding:30px;
      <property name="title">
       <string>Clear Screen</string>
      </property>
-     <addaction name="actionAll"/>
-     <addaction name="actionLines"/>
     </widget>
     <addaction name="actionRemove_lines"/>
     <addaction name="actionRemove_All"/>

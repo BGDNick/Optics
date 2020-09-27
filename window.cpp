@@ -39,10 +39,9 @@ Window::Window(QWidget *parent)
     ui->progressBar->setVisible(false);
     scene = std::make_unique<QGraphicsScene>(this);
     ui->graphicsView->setScene(scene.get());
-
-    std::cout << windowTitle().toStdString() << std::endl;
-    on_pushButtonCalculate_clicked();
     screenPosition = 500.0;
+    on_pushButtonCalculate_clicked();
+
 
 }
 
@@ -90,7 +89,7 @@ void Window::load()
     if(!is_saved) // предложение сохранить файл если он не сохранен
     {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Wrning", "Would you like to save?", QMessageBox::Yes|QMessageBox::No);
+        reply = QMessageBox::question(this, "Warning", "Would you like to save?", QMessageBox::Yes|QMessageBox::No);
         if(reply == QMessageBox::Yes)
         {
             save();
@@ -121,6 +120,7 @@ void Window::load()
     QJsonDocument jDoc = QJsonDocument::fromJson(text.toUtf8());
     QJsonObject jObj = jDoc.object();
 
+    //настройка экрана
     QJsonObject obj = jObj.value("boarders").toObject();
 
     mainFrame.first = obj.value("dx").toDouble();
@@ -128,6 +128,15 @@ void Window::load()
 
     ui->doubleSpinBox->setValue(mainFrame.first);
     ui->doubleSpinBox_2->setValue(mainFrame.second);
+
+    QJsonObject screenObj = jObj.value("screen").toObject();
+
+    ui->spinBoxScreenBrightLevel->setValue(screenObj.value("bright").toInt());
+    thirdScreen.bright_level = screenObj.value("bright").toInt();
+
+    screenPosition = screenObj.value("pos").toDouble();
+    ui->doubleSpinBoxScreenPos->setValue(screenPosition);
+    thirdScreen.position = screenPosition;
 
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
@@ -200,7 +209,6 @@ void Window::load()
 
     ui->plainTextEdit->setPlainText(text);
     on_pushButtonCalculate_clicked();
-
 }
 
 void Window::newDocument()
@@ -224,11 +232,16 @@ void Window::newDocument()
     //rects.clear();
     lens.clear();
     pixels.clear();
+    //настройка рамок
+    ui->doubleSpinBox->setValue(1000);
+    ui->doubleSpinBox_2->setValue(1000);
 
     on_actionAll_triggered();
     items.clear();
     ui->listWidget->clear();
     ui->plainTextEdit->clear();
+    on_pushButtonCalculate_clicked();
+    ui->plainTextEdit->setPlainText(this->getString());
 }
 
 void Window::saveAs()
@@ -253,6 +266,7 @@ void Window::on_pushButtonTextEnter_clicked()
     QJsonDocument jDoc = QJsonDocument::fromJson(text.toUtf8());
     QJsonObject jObj = jDoc.object();
 
+    //настройка границ
     QJsonObject obj = jObj.value("boarders").toObject();
 
     mainFrame.first = obj.value("dx").toDouble();
@@ -260,6 +274,16 @@ void Window::on_pushButtonTextEnter_clicked()
 
     ui->doubleSpinBox->setValue(mainFrame.first);
     ui->doubleSpinBox_2->setValue(mainFrame.second);
+    //настройка экрана
+
+    QJsonObject screenObj = jObj.value("screen").toObject();
+
+    ui->spinBoxScreenBrightLevel->setValue(screenObj.value("bright").toInt());
+    thirdScreen.bright_level = screenObj.value("bright").toInt();
+
+    screenPosition = screenObj.value("pos").toDouble();
+    ui->doubleSpinBoxScreenPos->setValue(screenPosition);
+    thirdScreen.position = screenPosition;
 
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
@@ -344,20 +368,20 @@ void Window::on_pushButtonClear_clicked()
 }
 
 //отрисовка всего
-void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true, true, true}*/)
+void Window::on_pushButtonCalculate_clicked()
 {
     scene.get()->clear();
 
     scene.get()->addRect(-mainFrame.first, - mainFrame.second, 2 * mainFrame.first, 2 * mainFrame.second);
 
-    QPen pen;
-    pen.setWidth(int(current_scale));
     //отрисовка линий
-    if(check[0])
+    foreach (Line l, lines)
     {
-        foreach (Line l, lines) {
-            scene.get()->addLine(l.x1, l.y1, l.x2, l.y2, pen);
-        }
+        QPen pen(QColor(l.rgb["r"], l.rgb["g"], l.rgb["b"]));
+        pen.setWidth(int(current_scale));
+        scene.get()->addLine(l.x1, l.y1, l.x2, l.y2, pen);
+
+        l.print();
     }
 
 
@@ -368,13 +392,12 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
     }*/
 
     //отрисовка линз
-    if(check[1])
+
+    foreach( Lens l, lens)
     {
-        foreach( Lens l, lens)
-        {
-            l.draw(scene.get());
-        }
+        l.draw(scene.get());
     }
+
     /*
     //отрисовка источников света
     if(check[2])
@@ -386,7 +409,9 @@ void Window::on_pushButtonCalculate_clicked(QVector<bool> check /*= {true, true,
     }*/
 
     //отрисовка местоположения изображения
-    scene.get()->addRect(0, 0, 20, 440, QPen(), QBrush(QColor(255,255,0)));
+    scene.get()->addRect(0, 0, 10, 440, QPen(), QBrush(QColor(255,255,0)));
+    //отрисовка местоположения экрана
+    scene.get()->addRect(screenPosition, 0, 10, 440, QPen(), QBrush(QColor(0,255,255)));
 }
 
 void Window::on_toolButtonScaleInc_clicked() // кнопка увеличения масштаба картинки
@@ -832,6 +857,12 @@ QString Window::getString(bool flag)
     obj.insert("dy", QJsonValue::fromVariant(mainFrame.second));
     jObj.insert("boarders",obj);
 
+    //вставка параметров экрана
+    QJsonObject screenObj;
+    screenObj.insert("bright", QJsonValue::fromVariant(ui->spinBoxScreenBrightLevel->value()));
+    screenObj.insert("pos", QJsonValue::fromVariant(ui->doubleSpinBoxScreenPos->value()));
+    jObj.insert("screen", screenObj);
+
     //вставка отрезков
     QJsonArray jArrLines;
     foreach(Line l, lines)
@@ -865,7 +896,6 @@ QString Window::getString(bool flag)
     //обновление пикселей
     pixels.clear();
     int amount = secondScreen.pixels.size();
-    std::cout << amount << std::endl;
     for(int i = 0; i < amount; i++)
     {
         for(int j = 0; j < amount; j++)
@@ -1168,8 +1198,7 @@ void Window::on_actionAll_triggered()
 
 void Window::on_actionLines_triggered()
 {
-    QVector<bool> check = {false, true, true, true};
-    on_pushButtonCalculate_clicked(check);
+    on_pushButtonCalculate_clicked();
 }
 
 void Window::on_actionDraw_triggered()
@@ -1191,14 +1220,37 @@ void Window::on_doubleSpinBoxScreenPos_valueChanged(double arg1)
 {
     thirdScreen.position = arg1;
     screenPosition = arg1;
+    on_pushButtonCalculate_clicked();
+    ui->plainTextEdit->setPlainText(this->getString());
+    is_saved = false;
 }
 
 void Window::on_spinBoxScreenBrightLevel_valueChanged(int arg1)
 {
     thirdScreen.bright_level = arg1;
+    ui->plainTextEdit->setPlainText(this->getString());
 }
 
 void Window::on_actionShow_Result_triggered()
 {
+    thirdScreen.calculate(lines);
     thirdScreen.setVisible(true);
 }
+
+
+void Window::on_pushButton_clicked()
+{
+    Line temp;
+    temp.x1 = 0;
+    temp.x2 = 500;
+    temp.y1 = 0;
+    temp.y2 = 20;
+    temp.z1 = 0;
+    temp.z2 = 300;
+    temp.rgb["b"] = 255;
+    lines.append(temp);
+    ui->plainTextEdit->setPlainText(this->getString());
+    on_pushButtonCalculate_clicked();
+}
+
+

@@ -15,7 +15,7 @@ Picture::Picture(QWidget *parent) :
     ui->graphicsView->setScene(scene.get());
     bright_level = 1;
     quantity = 1;
-    position = 500
+    position = 500;
     
 }
 
@@ -44,7 +44,7 @@ void Picture::calculate(QList<Line> lines)
         for(int j = 0; j < pixels.size(); j++)
         {
             pixels.at(i).at(j).setPixel1(freq, freq, freq * i, freq * j, 1);
-            pixels.at(i).at(j).drawPixel(drawingScene.get());
+            pixels.at(i).at(j).drawPixel(scene.get());
         }
     }
     

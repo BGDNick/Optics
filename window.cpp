@@ -380,8 +380,6 @@ void Window::on_pushButtonCalculate_clicked()
         QPen pen(QColor(l.rgb["r"], l.rgb["g"], l.rgb["b"]));
         pen.setWidth(int(current_scale));
         scene.get()->addLine(l.x1, l.y1, l.x2, l.y2, pen);
-
-        l.print();
     }
 
 
@@ -1214,6 +1212,7 @@ void Window::on_actionCreate_triggered()
 void Window::on_actionAdd_Picture_triggered()
 {
     ui->plainTextEdit->setPlainText(this->getString());
+    thirdScreen.quantity = secondScreen.pixels.size();
 }
 
 void Window::on_doubleSpinBoxScreenPos_valueChanged(double arg1)

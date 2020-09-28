@@ -104,3 +104,10 @@ void Pixel::sumColor(int _r, int _g, int _b)
         this->b = b + _b;
     }
 }
+
+void Pixel::setColor(int _r, int _g, int _b)
+{
+    this->r = _r;
+    this->g = _g;
+    this->b = _b;
+}

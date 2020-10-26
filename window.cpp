@@ -8,13 +8,10 @@ Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window),
       secondScreen(),
-      thirdScreen()
+      thirdScreen(),
+      lib("Opticsproject_4.dll")
 {
-    //start of lib code
-    const QString file_path = "./function_name";
-    const QLibrary lib1(file_path);
-    //end of lib code
-
+    std::cout << lib.load() << lib.errorString().toStdString() << std::endl;
     ui->setupUi(this);
     setWindowTitle("TheProgramm");
     setWindowIcon(QIcon(":/resources/data/Logo.png"));
@@ -125,9 +122,13 @@ void Window::load()
 
     mainFrame.first = obj.value("dx").toDouble();
     mainFrame.second = obj.value("dy").toDouble();
+    mainFrameZ = obj.value("dz").toDouble();
 
     ui->doubleSpinBox->setValue(mainFrame.first);
     ui->doubleSpinBox_2->setValue(mainFrame.second);
+    ui->doubleSpinBox_3->setValue(mainFrameZ);
+
+    //настройка изображения
 
     QJsonObject screenObj = jObj.value("screen").toObject();
 
@@ -137,6 +138,10 @@ void Window::load()
     screenPosition = screenObj.value("pos").toDouble();
     ui->doubleSpinBoxScreenPos->setValue(screenPosition);
     thirdScreen.position = screenPosition;
+
+    ui->spinBoxScreenSize->setValue(screenObj.value("size").toInt());
+    thirdScreen.size = screenObj.value("size").toInt();
+    //настройка всего остального
 
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
@@ -235,6 +240,26 @@ void Window::newDocument()
     //настройка рамок
     ui->doubleSpinBox->setValue(1000);
     ui->doubleSpinBox_2->setValue(1000);
+    ui->doubleSpinBox_3->setValue(1000);
+
+    //настройка изображения
+    ui->spinBoxScreenBrightLevel->setValue(1);
+    ui->spinBoxScreenSize->setValue(440);
+    ui->doubleSpinBoxScreenPos->setValue(500);
+
+    thirdScreen.bright_level = 1;
+    thirdScreen.quantity = 1;
+    thirdScreen.position = 500;
+    thirdScreen.pixels.clear();
+
+    //настройка окна построения избражения
+    secondScreen.pixels.clear();
+    std::vector<Pixel> first_pixel;
+    first_pixel.push_back(Pixel(0, 0, 0, 1, 255, 255, 255, 440, 440));
+    secondScreen.pixels.push_back(first_pixel);
+    secondScreen.pixels.back().back().drawPixel(secondScreen.drawingScene.get());
+
+    //настройка всего остального
 
     on_actionAll_triggered();
     items.clear();
@@ -271,9 +296,11 @@ void Window::on_pushButtonTextEnter_clicked()
 
     mainFrame.first = obj.value("dx").toDouble();
     mainFrame.second = obj.value("dy").toDouble();
+    mainFrameZ = obj.value("dz").toDouble();
 
     ui->doubleSpinBox->setValue(mainFrame.first);
     ui->doubleSpinBox_2->setValue(mainFrame.second);
+    ui->doubleSpinBox_3->setValue(mainFrameZ);
     //настройка экрана
 
     QJsonObject screenObj = jObj.value("screen").toObject();
@@ -284,6 +311,10 @@ void Window::on_pushButtonTextEnter_clicked()
     screenPosition = screenObj.value("pos").toDouble();
     ui->doubleSpinBoxScreenPos->setValue(screenPosition);
     thirdScreen.position = screenPosition;
+
+    ui->spinBoxScreenSize->setValue(screenObj.value("sixe").toInt());
+    thirdScreen.size = screenObj.value("size").toInt();
+    //настройка всего остального
 
     QJsonArray jArr_lines = jObj.value("line").toArray();
     //QJsonArray jArr_rects = jObj.value("screen").toArray();
@@ -364,7 +395,6 @@ void Window::on_pushButtonTextEnter_clicked()
 void Window::on_pushButtonClear_clicked()
 {
     ui->plainTextEdit->clear();
-    is_saved = false;
 }
 
 //отрисовка всего
@@ -409,7 +439,7 @@ void Window::on_pushButtonCalculate_clicked()
     //отрисовка местоположения изображения
     scene.get()->addRect(0, 0, 10, 440, QPen(), QBrush(QColor(255,255,0)));
     //отрисовка местоположения экрана
-    scene.get()->addRect(screenPosition, 0, 10, 440, QPen(), QBrush(QColor(0,255,255)));
+    scene.get()->addRect(screenPosition, 0, 10, ui->spinBoxScreenSize->text().toInt(), QPen(), QBrush(QColor(0,255,255)));
 }
 
 void Window::on_toolButtonScaleInc_clicked() // кнопка увеличения масштаба картинки
@@ -532,6 +562,7 @@ void Window::on_pushButtonLensAdd_clicked() //кнопка добавления 
 
 void Window::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // если по одному из элементов в списке элементов нажали два раза
 {
+    is_saved = false;
     //удаление объекта из items
     QList<QListWidgetItem> temp; // qvector
     foreach(QListWidgetItem it, items)
@@ -774,6 +805,7 @@ void Window::on_spinBoxLightAmount_valueChanged(int arg1) //будет удал�
 */
 void Window::on_doubleSpinBox_valueChanged(double arg1)
 {
+    is_saved = false;
     mainFrame.first = arg1;
     on_pushButtonCalculate_clicked();
     lines.clear();
@@ -782,18 +814,17 @@ void Window::on_doubleSpinBox_valueChanged(double arg1)
 
 void Window::on_pushButtonCalculate_2_clicked()
 {
-    /*
+
     typedef std::string (*Function_Name)(std::string);
-    Function_Name function_name = (Function_Name) lib.resolve("function_name");
-    QString output;
+    Function_Name function_name = (Function_Name) lib.resolve("system_run");
+    QString input;
     if(function_name)
     {
-        output = function_name(this->getString());
+        std::string* text_output = new std::string(this->getString().toStdString());
+        input = QString::fromStdString(function_name(*text_output));
         lines.clear();
-        QJsonDocument jDoc = QJsonDocument::fromJson(output.toUtf8());
-        QJsonObject jObj = jDoc.object();
-
-        QJsonArray jArr_lines = jObj.value("line").toArray();
+        QJsonDocument jDoc = QJsonDocument::fromJson(input.toUtf8());
+        QJsonArray jArr_lines = jDoc.array();
 
         foreach(QJsonValue jValue, jArr_lines)
         {
@@ -801,20 +832,23 @@ void Window::on_pushButtonCalculate_2_clicked()
             Line temp;
             temp.fromJsonObject(jLine);
             lines.append(temp);
-            on_pushButtonCalculate_clicked();
+
         }
+        on_pushButtonCalculate_clicked();
+        ui->plainTextEdit->setPlainText(this->getString());
     }
     else
     {
-        QMessageBox::warning(this, "Warning", "Cannot find function!");
+        QMessageBox::warning(this, "Warning", "Cannot find function! Probably dll is missing");
     }
-    */
+
     //отправка данных на сервер
     //Server server(this);
 }
 
 void Window::on_doubleSpinBox_2_valueChanged(double arg1)
 {
+    is_saved = false;
     mainFrame.second = arg1;
     on_pushButtonCalculate_clicked();
     lines.clear();
@@ -823,6 +857,7 @@ void Window::on_doubleSpinBox_2_valueChanged(double arg1)
 
 void Window::removeLines()
 {
+    is_saved = false;
     this->lines.clear();
     on_pushButtonCalculate_clicked();
     ui->plainTextEdit->setPlainText(this->getString());
@@ -830,6 +865,7 @@ void Window::removeLines()
 
 void Window::removeAll()
 {
+    is_saved = false;
     //работа с объектами
     lines.clear();
     //rects.clear();
@@ -853,12 +889,14 @@ QString Window::getString(bool flag)
     QJsonObject obj;
     obj.insert("dx", QJsonValue::fromVariant(mainFrame.first));
     obj.insert("dy", QJsonValue::fromVariant(mainFrame.second));
+    obj.insert("dz", QJsonValue::fromVariant(mainFrameZ));
     jObj.insert("boarders",obj);
 
     //вставка параметров экрана
     QJsonObject screenObj;
     screenObj.insert("bright", QJsonValue::fromVariant(ui->spinBoxScreenBrightLevel->value()));
     screenObj.insert("pos", QJsonValue::fromVariant(ui->doubleSpinBoxScreenPos->value()));
+    screenObj.insert("size", QJsonValue::fromVariant(ui->spinBoxScreenSize->text().toInt()));
     jObj.insert("screen", screenObj);
 
     //вставка отрезков
@@ -914,7 +952,7 @@ QString Window::getString(bool flag)
     QJsonDocument jDoc(jObj);
 
     QString text;
-    text = jDoc.toJson(QJsonDocument::Indented);
+    text = jDoc.toJson(QJsonDocument::Compact);
 
     return text;
 }
@@ -1217,6 +1255,7 @@ void Window::on_actionAdd_Picture_triggered()
 
 void Window::on_doubleSpinBoxScreenPos_valueChanged(double arg1)
 {
+    is_saved = false;
     thirdScreen.position = arg1;
     screenPosition = arg1;
     on_pushButtonCalculate_clicked();
@@ -1226,12 +1265,14 @@ void Window::on_doubleSpinBoxScreenPos_valueChanged(double arg1)
 
 void Window::on_spinBoxScreenBrightLevel_valueChanged(int arg1)
 {
+    is_saved = false;
     thirdScreen.bright_level = arg1;
     ui->plainTextEdit->setPlainText(this->getString());
 }
 
 void Window::on_actionShow_Result_triggered()
 {
+    thirdScreen.size = ui->spinBoxScreenSize->text().toInt();
     thirdScreen.calculate(lines);
     thirdScreen.setVisible(true);
 }
@@ -1253,3 +1294,17 @@ void Window::on_pushButton_clicked()
 }
 
 
+
+void Window::on_spinBoxScreenSize_valueChanged(int arg1)
+{
+    on_pushButtonCalculate_clicked();
+}
+
+void Window::on_doubleSpinBox_3_valueChanged(double arg1)
+{
+    is_saved = false;
+    mainFrameZ = arg1;
+    on_pushButtonCalculate_clicked();
+    lines.clear();
+    ui->plainTextEdit->setPlainText(this->getString());
+}

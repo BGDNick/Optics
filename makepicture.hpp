@@ -25,6 +25,7 @@ public:
 public:
     std::vector<std::vector<Pixel>> pixels;
     Ui::MakePicture *ui;
+    std::unique_ptr<QGraphicsScene> drawingScene;
 public slots:
     void on_spinBox_valueChanged(int arg1);
 
@@ -37,15 +38,13 @@ private slots:
 
     void on_spinBoxB_valueChanged(int arg1);
 
-
-
     void on_spinBoxDefinition_valueChanged(int arg1);
 
 
 private:
 
     std::unique_ptr<QGraphicsScene> colorScene;
-    std::unique_ptr<QGraphicsScene> drawingScene;
+
 
 
 };

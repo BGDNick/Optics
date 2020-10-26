@@ -24,12 +24,10 @@ MakePicture::MakePicture(QWidget *parent):
     first_pixel.push_back(Pixel(0, 0, 0, 1, 255, 255, 255, 440, 440));
     pixels.push_back(first_pixel);
     pixels.back().back().drawPixel(drawingScene.get());
-    std::cout << "MakePicture" << std::endl;
 }
 
 MakePicture::~MakePicture()
 {
-    std::cout << "~MakePicture" << std::endl;
     delete ui;
 }
 

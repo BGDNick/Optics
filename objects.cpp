@@ -7,6 +7,6 @@ Object::Object()
 
 QJsonObject Object::toJsonObject() const
 {
-
+    return QJsonObject();
 }
 

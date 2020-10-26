@@ -62,15 +62,22 @@ QJsonObject Pixel::toJsonObject() const
 {
     QJsonObject jObj;
 
-    jObj.insert("r", QJsonValue::fromVariant(r));
-    jObj.insert("g", QJsonValue::fromVariant(g));
-    jObj.insert("b", QJsonValue::fromVariant(b));
+    QJsonArray RGB;
+    QJsonArray pos;
+
+    RGB.append(QJsonValue::fromVariant(r));
+    RGB.append(QJsonValue::fromVariant(g));
+    RGB.append(QJsonValue::fromVariant(b));
+
+    pos.append(QJsonValue::fromVariant(x));
+    pos.append(QJsonValue::fromVariant(y));
+    pos.append(QJsonValue::fromVariant(z));
+
     jObj.insert("definition", QJsonValue::fromVariant(definition));
-    jObj.insert("x", QJsonValue::fromVariant(z));
-    jObj.insert("y", QJsonValue::fromVariant(y));
-    jObj.insert("z", QJsonValue::fromVariant(x));
     jObj.insert("width", QJsonValue::fromVariant(width));
     jObj.insert("height", QJsonValue::fromVariant(height));
+    jObj.insert("centre", pos);
+    jObj.insert("rgb", RGB);
 
     return jObj;
 }

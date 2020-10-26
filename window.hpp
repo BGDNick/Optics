@@ -9,7 +9,7 @@
 #include "light.hpp"
 #include "makepicture.hpp"
 #include "picture.hpp"
-
+//#include "../Downloads/OpticsClasses.hpp"
 QT_BEGIN_NAMESPACE
 namespace Ui { class Window; }
 QT_END_NAMESPACE
@@ -29,6 +29,7 @@ public:
     void send(bool flag = true);
 
     void on_pushButtonCalculate_clicked();
+
 public slots:
 
 
@@ -90,8 +91,11 @@ private slots:
 
     void on_actionShow_Result_triggered();
 
-
     void on_pushButton_clicked();
+
+    void on_spinBoxScreenSize_valueChanged(int arg1);
+
+    void on_doubleSpinBox_3_valueChanged(double arg1);
 
 public:
     QList<Line> lines;
@@ -106,12 +110,13 @@ public:
     //QGraphicsScene *scene;
 private:
     std::pair<double, double> mainFrame = std::make_pair(1000, 1000);
+    double mainFrameZ = 1000;
     bool is_saved = true; 
     QList<QListWidgetItem> items;   
     QGraphicsView view;
     QString currentFile;
     double current_scale = 0.0;
-    const QLibrary lib;
+    QLibrary lib;
 
 };
 #endif // WINDOW_HPP

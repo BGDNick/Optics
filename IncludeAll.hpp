@@ -26,6 +26,7 @@
 #include <QMap>
 #include <QMessageBox>
 #include <QPainter>
+#include <QString>
 #include <QtCore>
 #include <QTcpServer>
 #include <QTcpSocket>

@@ -26,6 +26,8 @@ Picture::~Picture()
 
 void Picture::calculate(QList<Line> lines)
 {
+    this->setFixedSize(size, size);
+    this->ui->graphicsView->setFixedSize(size, size);
     std::cout << "===========================" <<std::endl;
     std::cout << "bright level " << bright_level << std::endl;
     std::cout << "position " << position << std::endl;
@@ -46,7 +48,7 @@ void Picture::calculate(QList<Line> lines)
     }
 
     //настройка всех пикселей 
-    double freq = 440 / quantity;
+    double freq = size / quantity;
     for(int i = 0; i < pixels.size(); i++)
     {
         for(int j = 0; j < pixels.size(); j++)
@@ -68,7 +70,7 @@ void Picture::calculate(QList<Line> lines)
              int y = l.y1;
 
              //проверка на то находится ли нажатие в нужной области
-             if(((x<0)||(x>440)||(y<0)||(y>440)))
+             if(((x<0)||(x>size)||(y<0)||(y>size)))
              {
                  std::cout << "not in square" << std::endl;
                  std::cout << "x:  " << x << " y:  " << y << std::endl;
@@ -76,7 +78,7 @@ void Picture::calculate(QList<Line> lines)
              }
 
              //закрашивание нужного пикселя
-             double freq = 440 / quantity;
+             double freq = size / quantity;
              int number_x = int( x / freq);
              int number_y = int( y / freq);
              int r = l.rgb["r"] / bright_level;
@@ -94,7 +96,7 @@ void Picture::calculate(QList<Line> lines)
             int y = l.y2;
 
             //проверка на то находится ли нажатие в нужной области
-            if(((x<0)||(x>440)||(y<0)||(y>440)))
+            if(((x<0)||(x>size)||(y<0)||(y>size)))
             {
                 std::cout << "not in square" << std::endl;
                 std::cout << "x:  " << x << " y:  " << y << std::endl;
@@ -102,7 +104,7 @@ void Picture::calculate(QList<Line> lines)
             }
 
             //закрашивание нужного пикселя
-            double freq = 440 / quantity;
+            double freq = size / quantity;
             int number_x = int( x / freq);
             int number_y = int( y / freq);
             int r = l.rgb["r"] / bright_level;

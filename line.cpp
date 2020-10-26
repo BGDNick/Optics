@@ -30,6 +30,8 @@ QJsonObject Line::toJsonObject() const
     QJsonObject jObj;
     QJsonArray begin;
     QJsonArray end;
+    QJsonArray RGB;
+
     //создание конченого и начального значения
     begin.append(QJsonValue::fromVariant(x1));
     begin.append(QJsonValue::fromVariant(y1));
@@ -39,11 +41,13 @@ QJsonObject Line::toJsonObject() const
     end.append(QJsonValue::fromVariant(y2));
     end.append(QJsonValue::fromVariant(z2));
 
+    RGB.append(QJsonValue::fromVariant(rgb["r"]));
+    RGB.append(QJsonValue::fromVariant(rgb["g"]));
+    RGB.append(QJsonValue::fromVariant(rgb["b"]));
+
     jObj.insert("begin", begin);
     jObj.insert("end", end);
-    jObj.insert("r", QJsonValue::fromVariant(rgb["r"]));
-    jObj.insert("g", QJsonValue::fromVariant(rgb["g"]));
-    jObj.insert("b", QJsonValue::fromVariant(rgb["b"]));
+    jObj.insert("rgb", RGB);
     return jObj;
 
 }
@@ -52,9 +56,11 @@ Line Line::fromJsonObject(QJsonObject jObj)
 {
     QJsonArray begin;
     QJsonArray end;
+    QJsonArray rgb;
 
     begin = jObj.value("begin").toArray();
     end = jObj.value("end").toArray();
+    rgb = jObj.value("rgb").toArray();
 
     this->x1 = begin[0].toDouble();
     this->y1 = begin[1].toDouble();
@@ -63,9 +69,10 @@ Line Line::fromJsonObject(QJsonObject jObj)
     this->x2 = end[0].toDouble();
     this->y2 = end[1].toDouble();
     this->z2 = end[2].toDouble();
-    this->rgb["r"] = jObj.value("r").toInt();
-    this->rgb["g"] = jObj.value("g").toInt();
-    this->rgb["b"] = jObj.value("b").toInt();
+
+    this->rgb["r"] = rgb[0].toInt();
+    this->rgb["g"] = rgb[1].toInt();
+    this->rgb["b"] = rgb[2].toInt();
 
     return *this;
 }

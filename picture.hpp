@@ -20,11 +20,11 @@ public:
     void calculate(QList<Line> lines);
 public:
     std::vector<std::vector<Pixel>> pixels;
-    size_t bright_level;
-    size_t quantity;
+    size_t bright_level = 1;
+    size_t quantity = 1;
+    size_t size = 440;
     double position;
     std::unique_ptr<QGraphicsScene> scene;
-private:
     Ui::Picture *ui;
 };
 

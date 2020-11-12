@@ -50,7 +50,3 @@ RC_ICONS = Logo.ico.ico
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-INCLUDEPATH += C:/boost_1_72_0
-DEPENDPATH += C:/Users/Nick/Desktop \
-              C:/boost_1_72_0

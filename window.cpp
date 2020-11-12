@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include "ui_window.h"
 #include <iostream>
+#include <string>
 
 //WINDOW
 
@@ -9,7 +10,7 @@ Window::Window(QWidget *parent)
     , ui(new Ui::Window),
       secondScreen(),
       thirdScreen(),
-      lib("Opticsproject_4.dll")
+      lib("Opticsproject.dll")
 {
     std::cout << lib.load() << lib.errorString().toStdString() << std::endl;
     ui->setupUi(this);
@@ -814,18 +815,20 @@ void Window::on_doubleSpinBox_valueChanged(double arg1)
 
 void Window::on_pushButtonCalculate_2_clicked()
 {
-
-    typedef std::string (*Function_Name)(std::string);
-    Function_Name function_name = (Function_Name) lib.resolve("system_run");
+// from string to char*
+    typedef const std::string (*Function_Name)(std::string);
+    Function_Name function_name = (Function_Name)lib.resolve("system_run");
     QString input;
     if(function_name)
     {
-        std::string* text_output = new std::string(this->getString().toStdString());
-        input = QString::fromStdString(function_name(*text_output));
+        std::string text_output = this->getString().toStdString();
+        std::cout << text_output << std::endl;
+        input = QString::fromStdString(function_name(text_output));
         lines.clear();
         QJsonDocument jDoc = QJsonDocument::fromJson(input.toUtf8());
         QJsonArray jArr_lines = jDoc.array();
 
+        std::cout << jArr_lines.size() << std::endl;
         foreach(QJsonValue jValue, jArr_lines)
         {
             QJsonObject jLine = jValue.toObject();
